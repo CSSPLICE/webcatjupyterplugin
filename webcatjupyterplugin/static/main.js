@@ -7,14 +7,6 @@ define([
         var submitActionName = 'submit-to-webcat';
 
         function load_ipython_extension() {
-            $('<link/>')
-                .attr({
-                    id: 'collapsible_headings_css',
-                    rel: 'stylesheet',
-                    type: 'text/css',
-                    href: requirejs.toUrl('./main.css')
-                })
-                .appendTo('head');
 
             var action = {
                 span: 'Submit to Web-CAT',
