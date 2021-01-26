@@ -55,6 +55,7 @@ define([
                 url: '/webcat/push',
                 processData: false,
                 type: "PUT",
+                headers: {},
                 dataType: "json",
                 data: JSON.stringify(payload),
                 contentType: 'application/json',
@@ -74,6 +75,12 @@ define([
                     alert("Error while submitting to Web-CAT");
                 }
             };
+
+            // https://blog.jupyter.org/security-release-jupyter-notebook-4-3-1-808e1f3bb5e2
+            var xsrf_token = document.cookie.match("\\b_xsrf=([^;]*)\\b")?.[1]
+            if (xsrf_token) {
+                settings.headers['X-XSRFToken'] = xsrf_token
+            }
 
             // commit and push
             $.ajax(settings);
