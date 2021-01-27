@@ -60,16 +60,7 @@ define([
                 data: JSON.stringify(payload),
                 contentType: 'application/json',
                 success: function (data) {
-                    var iframe_html = '<iframe src="' + data.redirectLink +
-                        '" width = 650 height = 500></iframe>';
-                    dialog.modal({
-                        title: "Web-CAT",
-                        body: iframe_html,
-                        sanitize: false,
-                        buttons: {
-                            'Close': {}
-                        }
-                    });
+                    window.open(data.redirectLink);
                 },
                 error: function (data) {
                     alert("Error while submitting to Web-CAT");
