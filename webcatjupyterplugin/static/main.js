@@ -7,14 +7,6 @@ define([
         var submitActionName = 'submit-to-webcat';
 
         function load_ipython_extension() {
-            $('<link/>')
-                .attr({
-                    id: 'collapsible_headings_css',
-                    rel: 'stylesheet',
-                    type: 'text/css',
-                    href: requirejs.toUrl('./main.css')
-                })
-                .appendTo('head');
 
             var action = {
                 span: 'Submit to Web-CAT',
@@ -63,25 +55,23 @@ define([
                 url: '/webcat/push',
                 processData: false,
                 type: "PUT",
+                headers: {},
                 dataType: "json",
                 data: JSON.stringify(payload),
                 contentType: 'application/json',
                 success: function (data) {
-                    var iframe_html = '<iframe src="' + data.redirectLink +
-                        '" width = 650 height = 500></iframe>';
-                    dialog.modal({
-                        title: "Web-CAT",
-                        body: iframe_html,
-                        sanitize: false,
-                        buttons: {
-                            'Close': {}
-                        }
-                    });
+                    window.open(data.redirectLink);
                 },
                 error: function (data) {
                     alert("Error while submitting to Web-CAT");
                 }
             };
+
+            // https://blog.jupyter.org/security-release-jupyter-notebook-4-3-1-808e1f3bb5e2
+            var xsrf_token = document.cookie.match("\\b_xsrf=([^;]*)\\b")?.[1]
+            if (xsrf_token) {
+                settings.headers['X-XSRFToken'] = xsrf_token
+            }
 
             // commit and push
             $.ajax(settings);
